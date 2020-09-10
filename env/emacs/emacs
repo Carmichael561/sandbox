@@ -1,0 +1,132 @@
+;; sudo apt install xclip
+
+
+;; linum
+;; 
+
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+
+
+
+;;(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+
+
+(global-linum-mode t)
+(setq column-number-mode t)
+(setq linum-format "%4d \u2502")
+
+
+
+
+;; Copy and Paste
+;;(x-select-enable-primary t)
+;;(x-select-enable-clipboard t)
+(setq x-select-enable-clipboard t)
+(setq x-select-enable-primary t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+(setq interprogram-cut-function 'x-select-text)
+;;sudo apt install xclip
+(setq xclip-mode 1)
+;;TERM=xterm emacs -nw some files
+
+
+
+(defun custom-c-mode-auto-pair ()
+(push ?{
+	  (getf autopair-dont-pair :everywhere))
+(interactive)
+(make-local-variable 'skeleton-pair-alist)
+(setq skeleton-pair-alist  '((?{ \n > _ \n ?} >)))
+(setq skeleton-pair t)
+(local-set-key (kbd "{") 'skeleton-pair-insert-maybe)
+)
+
+
+
+
+
+
+
+
+(require 'cc-mode)
+(add-to-list 'c-mode-common-hook (lambda () (setq c-syntactic-indentation nil)))
+
+
+
+
+
+
+
+
+;;“gnu”: The default style for GNU projects
+;;“k&r”: What Kernighan and Ritchie, the authors of C used in their book
+;;“bsd”: What BSD developers use, aka “Allman style” after Eric Allman.
+;;“whitesmith”: Popularized by the examples that came with Whitesmiths C, an early commercial C compiler.
+;;“stroustrup”: What Stroustrup, the author of C++ used in his book
+;;“ellemtel”: Popular C++ coding standards as defined by “Programming in C++, Rules and Recommendations,” Erik Nyquist and Mats Henricson, Ellemtel
+;;“linux”: What the Linux developers use for kernel development
+;;“python”: What Python developers use for extension modules
+;;“java”: The default style for java-mode (see below)
+;;“user”: When you want to define your own style
+
+(defconst custom-c-style
+  '((c-backslash-column . 80) 
+    (c-backslash-max-column . 80)
+    (c-offsets-alist .
+		     ((inextern-lang . 0)
+		      (substatement . 0)
+		      (statement-case-intro . 0)
+		      (substatement-open . 0)
+		      (case-label . +)
+		      (block-open . 0))))
+  "Custom C programming style"
+  )
+(c-add-style "Custom" custom-c-style)
+(defun custom-c-mode-common-hook ()
+  (c-set-style "Custom") ; Custom C-Style
+  (setq c-basic-offet 4) ; Tab size
+  (setq c-default-style "linux")
+  (c-toggle-hungry-state 1) ; Hungry delete
+  (custom-c-mode-auto-pair) ; Auto-pair hook
+  )
+(add-hook 'c-mode-common-hook 'custom-c-mode-common-hook)
+
+
+
+
+
+(add-hook 'highlight-parentheses-mode-hook
+          '(lambda ()
+             (setq autopair-handle-action-fns
+                   (append
+					(if autopair-handle-action-fns
+						autopair-handle-action-fns
+					  '(autopair-default-handle-action))
+					'((lambda (action pair pos-before)
+						(hl-paren-color-update)))))))
+
+
+
+
+
+
+
+(require 'linum-highlight-current-line-number)
+(setq linum-format 'linum-highlight-current-line-number)
+
+
+
+
+
+
+(require 'smooth-scrolling)
+(smooth-scrolling-mode 1)
+(setq smooth-scroll-margin 8)
