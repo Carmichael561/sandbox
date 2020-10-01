@@ -1,0 +1,2 @@
+Embedded this to object file.
+Hello from txt!

@@ -1,0 +1,12 @@
+1. build glibc and dynamically link with program
+2. build glibc and statically link wth program
+3. build glibc and dynamically link with program. Run program. Commect GDB from outer console to program.
+4. Call ldopen in program and load&link with speciffic library under gdb.
+5. Try use gcc for linking -fplugin=name.so
+
+gcc -shared -fPIC  libtest.c -o libtest.so && gcc -c main.c -o main.o && gcc main.o -o test -L. -ltest && ./test
+
+
+#preprocessing and compiling assembler -> object linking produce executable.
+
+#Compile under GDB: gcc -g -c main.c -wrapper gdbtui,--args
