@@ -1,0 +1,36 @@
+kcocci() {
+IFS=$'\n'
+set -f
+rm -rf "$1".modify
+for i in $(cat < "$1"); do
+    if echo $i | egrep -oh "^\./[a-z,A-Z,0-9,_,/]*[-]{0,1}[a-z,A-Z,0-9,_,/]*[-]{0,1}[a-z,A-Z,0-9,_,/]*[-]{0,1}[a-z,A-Z,0-9,_,/]*\.[c,h]:[0-9]*:[0-9]*-[0-9]*:"; then
+        kfile=$(echo $i | egrep -oh "^\./[a-z,A-Z,0-9,_,/]*[-]{0,1}[a-z,A-Z,0-9,_,/]*[-]{0,1}[a-z,A-Z,0-9,_,/]*[-]{0,1}[a-z,A-Z,0-9,_,/]*\.[c,h]");
+        kdate=$(git log --no-merges -1 --pretty="format:%ci" "$kfile");
+        if [ -z "$kdate" ]
+        then
+            echo $i >> "$1".modify;
+        else
+            printf "%s ---> %s\n" $kdate $i >> "$1".modify;
+        fi
+    else
+        echo $i >> "$1".modify;
+    fi
+done
+}
+
+
+function kpatch ()
+{
+patch=$1
+./scripts/get_maintainer.pl --norolestats $patch
+shift
+git send-email --cc-cmd="./scripts/get_maintainer.pl --norolestats $patch" $@ $patch
+}
+
+rpi_mount_sda()
+{
+sudo mkdir -p mnt/sda1
+sudo mkdir -p mnt/sda2
+sudo mount /dev/sda1 mnt/sda1
+sudo mount /dev/sda2 mnt/sda2
+}
