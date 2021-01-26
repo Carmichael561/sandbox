@@ -63,3 +63,37 @@ int steadyGene(char* gene) {
 
     return min;
 }
+
+
+
+
+int fr[300] = {0};
+int steadyGene(char* gene)
+{
+    int n = strlen(gene);
+    int n4 = n/4;
+    int left = 0;
+    int right = n-1;
+    char *s = gene;
+    int minlen = n;
+    
+    while (right >= 0) {
+        fr[s[right]]++;
+        if (fr[s[right]] == n4)
+            break;
+        right--;
+    }
+    while (left < n) {
+        fr[s[left]]++;
+        while (right < n && fr[s[left]] > n4)
+        {
+            fr[s[right]]--;
+            right++;
+        }
+        left++;
+        minlen = minlen < (right-left) ? minlen : (right-left);
+        if (n == right)
+            break;
+    }
+    return minlen;
+}
