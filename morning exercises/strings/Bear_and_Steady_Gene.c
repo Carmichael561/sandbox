@@ -1,4 +1,5 @@
-int steadyGene_slow(char* gene) {
+
+int steadyGene(char* gene) {
     
     if (gene == NULL) return 0;
     if (strlen(gene) < 4) return 0;
@@ -29,12 +30,13 @@ int steadyGene_slow(char* gene) {
     A=A<0?0:A; C=C<0?0:C; G=G<0?0:G; T=T<0?0:T; 
 
     if (A==0 && C==0 && G==0 && T==0) return 0;
-    
+
     int min = 1000000;
-    for (int i = 0; i < n; i++)
+    int i = 0;
+    for (i = 0; i < n; i++)
     {
-        a = A; c = C; g = G; t = T;
         s = &gene[i];
+        a = A; c = C; g = G; t = T;
         while ( *s != '\0' && (a || c || g || t) )
         {
             if (*s=='A' && a>0) a--;
@@ -43,12 +45,20 @@ int steadyGene_slow(char* gene) {
             if (*s=='T' && t>0) t--;
             s++;
         }
-        
+        bool dec = true;
+        while ( dec )
+        {
+            dec = false;
+            if (gene[i]=='A' && A==0) i++, dec=true;
+            else if (gene[i]=='C' && C==0) i++, dec=true;
+            else if (gene[i]=='G' && G==0) i++, dec=true;
+            else if (gene[i]=='T' && T==0) i++, dec=true;
+        }
         if (!a && !c && !g && !t)
         {
             int len = s - &gene[i];
             min = len < min ? len : min;
-        }   
+        }
     }
 
     return min;
