@@ -1,0 +1,4 @@
+
+/**
+ */
+int reverse(char **s);
