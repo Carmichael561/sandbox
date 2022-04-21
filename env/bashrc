@@ -54,3 +54,14 @@ sudo mount /dev/sda2 mnt/sda2
 #### GIT CONFIG ####
 git config --global alias.hs "log --pretty='%C(yellow)%h %C(cyan)%ad %Cblue%ae%C(auto)%d %Creset%s' --date=relative --date-order --graph"
 #### GIT CONFIG ####
+
+grp () {
+cat /etc/group | sort -t: -k3n | awk  -F ':' \
+  'BEGIN{printf "\n%-20s %-3s %-8s %s", \
+           "Group name","pw", "Group ID ", "User list"}\
+   BEGIN{printf "\n%-20s %-3s %-8s %s\n", \
+           "----------","--", "---------", "---------"} \
+        { printf "%-20s %-3s %8d %s\n", $1, $2, $3, $4 }'
+}
+
+
