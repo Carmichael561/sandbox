@@ -42,6 +42,16 @@ shift
 git send-email --cc-cmd="./scripts/get_maintainer.pl --norolestats $patch" $@ $patch
 }
 
+function kreply ()
+{
+patch=$1
+msgid=$2
+text=$3
+git send-email --in-reply-to=$msgid --cc-cmd="./scripts/get_maintainer.pl --norolestats $patch" $@ $text
+}
+
+alias gitfp='git format-patch --full-index --binary'
+
 rpi_mount_sda()
 {
 sudo mkdir -p mnt/sda1
