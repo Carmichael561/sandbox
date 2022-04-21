@@ -74,4 +74,4 @@ cat /etc/group | sort -t: -k3n | awk  -F ':' \
         { printf "%-20s %-3s %8d %s\n", $1, $2, $3, $4 }'
 }
 
-
+alias ps1='ps -H -eo "%p %y %x %c %a"'
