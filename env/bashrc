@@ -75,3 +75,5 @@ cat /etc/group | sort -t: -k3n | awk  -F ':' \
 }
 
 alias ps1='ps -H -eo "%p %y %x %c %a"'
+
+alias rmb='grep -r -IL . | xargs rm -r -f'
