@@ -77,4 +77,4 @@ cat /etc/group | sort -t: -k3n | awk  -F ':' \
 alias ps1='ps -H -eo "%p %y %x %c %a"'
 
 alias rmb='grep -r -IL . | xargs rm -r -f'
-alias atfk='rsync -h --stats -P -a -vv --exclude="*git*" --exclude="*build*"  host@10.10.10.10:/home/host/projects/atf /home/mobaxterm/firmware/'
+alias atfk='rsync --no-perms --no-owner --no-group -h --stats -P -a -vv --exclude="*git*" --exclude="build"  user@10.10.10.10:/home/user/projects/atf ..'
