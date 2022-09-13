@@ -79,3 +79,6 @@ alias ps1='ps -H -eo "%p %y %x %c %a"'
 alias rmb='grep -r -IL . | xargs rm -r -f'
 alias atfk='rsync --no-perms --no-owner --no-group -h --stats -P -a -vv --exclude="*git*" --exclude="build"  user@10.10.10.10:/home/user/projects/atf ..'
 alias atfc="rsync -a --no-perms --no-owner --no-group -h --stats -P -vv --include='*/' --include='*.h' --include='*.c' --exclude='*' . user@10.10.10.10:/home/user/projects/atf"
+
+alias fmp="git log --no-merges  v5.4..v5.10 --pretty=format:'%H'  -- drivers/edac/edac_* | sed 's/$/^!/g' | xargs -I{} git format-patch {}"
+
